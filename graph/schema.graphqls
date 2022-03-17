@@ -1,0 +1,810 @@
+scalar Upload
+
+input RefreshTokenInput{
+  token: String!
+}
+
+input Login {
+  did: String!
+  time: Int!
+  sig: String!
+}
+
+input BindAddress {
+    did: String!
+    address: String!
+    chain: String!
+    pubkey:String!
+    sig: String!
+}
+
+input UnBindAddress{
+    did:String!
+    chain:String!
+    address:String!
+}
+
+type PriceInfo{
+    priceType:Int!
+    price:Int!
+    chargeType:Int!
+}
+
+type AlgorithmProvider{
+    name:String!
+    type:String!
+    introduction:String!
+    did:String!
+    createTime:Int!
+    title:String!
+    provider:String!
+    invokeFrequency:Int!
+    apiState:Int!
+    author:String!
+    popularity:Int!
+    delay:Int!
+    icon:String!
+}
+
+type DataProvider {
+    name:String!
+    type:String!
+    introduction:String!
+    did:String!
+    createTime:Int!
+    title:String!
+    provider:String!
+    invokeFrequency:Int!
+    apiState:Int!
+    author:String!
+    popularity:Int!
+    delay:Int!
+    icon:String!
+}
+
+type UserAsset {
+    name:String!
+    tokenAddress:String!
+    icon:String!
+    chain:String!
+    balance:String!
+    price:String!
+    value:String!
+}
+
+input TokenPrice {
+    name:String!
+    contractAddress:String!
+    chain:String!
+}
+
+type UserAddressInfo {
+    chain:String!
+    address:String!
+    createTime:Int!
+    visible:Boolean!
+}
+
+type UserLatestOscore {
+    Oscore:Int!
+    ApDID:String!
+    DpDID:String!
+    CreateTime:Int!
+}
+
+type UserTasks {
+    taskId:String!
+    userDID:String!
+    apDID:String!
+    apName:String!
+    apIcon:String!
+    apMethod:String!
+    apMethodName:String!
+    dpDID:String!
+    dpName:String!
+    dpIcon:String!
+    dpMethod:String!
+    dpMethodName:String!
+    createTime:String!
+    updateTime:String!
+    taskStatus:String!
+    taskResult:String
+    resultFile:String
+    issueTxhash:String
+    valid_to:Int!
+    nftType:Int!
+    involved_addresses:String!
+}
+
+type ProviderMethod {
+    name:String!
+    paramSchema:String!
+    resultSchema:String!
+    title:String!
+    description:String!
+    labels:LabelsInfos!
+    createTime:Int!
+    nftType:Int!
+    totalUsed:Int!
+    hasDataSet:Boolean!
+    status:String!
+    supportMulti:Boolean!
+}
+
+input UserWallet{
+    chain:String!
+    address:String!
+    pubkey:String!
+    sig:String!
+}
+
+input RequestOscoreData {
+    userdid:String!
+    apdid:String!
+    apmethod:String!
+    dpdid:String!
+    dpmethod:String!
+    overwriteOld:Boolean!
+    wallets:[UserWallet!]!
+}
+
+input RequestOscoreReq{
+    appdid:String!
+    data:RequestOscoreData!
+    sig:String!
+}
+
+input AddTask{
+    userDID:String!
+    apDID:String!
+    apMethod:String!
+    dpDID:String!
+    dpMethod:String!
+    bindInfo:String!
+}
+
+input getAllAlgorithmProvidersReq{
+    nameLike:String
+    orderBy:String
+    orderDirection:String
+}
+
+
+# for ontlogin
+input ClientHello{
+    ver:String!
+    type:String!
+    action:Int!
+}
+
+
+type ServerHello{
+    ver:String!
+    type:String!
+    nonce:String!
+    server:ServerInfo!
+    chain:[String!]!
+    alg:[String!]!
+    vcFilters:[VCFilter]
+
+}
+type ServerInfo{
+    name:String!
+    icon:String!
+    url:String!
+    did:String!
+    verificationMethod:String!
+}
+
+type VCFilter{
+    type :String!
+    express:[String]
+    trustRoots:[String!]!
+    required:Boolean!
+}
+
+input ClientResponse {
+    ver:String!
+    type:String!
+    did:String!
+    nonce:String!
+    proof:Proof!
+    vps:[String!]
+}
+
+input Proof{
+    type:String!
+    verificationMethod:String!
+    created:Int!
+    value:String!
+}
+
+type DPAndMethod {
+    dp:DataProvider!
+    method:ProviderMethod!
+}
+
+type GenNFTCountResp{
+    count:Int!
+}
+
+type GenReputationCountResp{
+    count:Int!
+}
+
+input AlgorithmProviderWhere{
+    name_like:String
+}
+input DataProviderWhere{
+    name_like:String
+}
+input DataProviderMethodWhere{
+    name_like:String
+    did_like:String
+}
+input AlgorithmProviderMethodWhere{
+    name_like:String
+    did_like:String
+}
+
+
+type GetAllAlgorithmProvidersResp{
+    total:Int!
+    data:[AlgorithmProvider!]!
+}
+type GetAllDataProviders{
+    total:Int!
+    data:[DataProvider!]!
+}
+type GetAllDataProviderMethodsResp{
+    total:Int!
+    data:[DPMethodWithDp!]!
+}
+type GetAllAlgorithmProviderMethodsResp{
+    total:Int!
+    data:[APMethodWithAp!]!
+}
+type DPMethodWithDp{
+    did:String!
+    name:String!
+    method:String!
+    methodName:String!
+    methodDescription:String!
+    icon:String!
+    used:Int!
+    labels:LabelsInfos!
+}
+
+type APMethodWithAp{
+    did:String!
+    name:String!
+    method:String!
+    methodName:String!
+    methodDescription:String!
+    icon:String!
+    used:Int!
+    labels:LabelsInfos!
+}
+
+input AddNewOuterTaskReq{
+    caller_did:String!
+    data: AddNewOuterTaskReqData!
+    sig:String!
+}
+
+input AddNewOuterTaskReqData{
+    dp_did:String!
+    dp_method:String!
+    ap_did:String!
+    ap_method:String!
+    wallet:WalletInfo!
+}
+
+input WalletInfo{
+    chain:String!
+    address:String!
+}
+
+input OuterTaskReq{
+    caller_did:String!
+    data:OuterTaskReqData!
+    sig:String!
+}
+
+input OuterTaskReqData{
+    task_id:Int!
+}
+
+input UserCredntialWhere{
+    user_did:String!
+    dp_did:String
+    dp_method:String
+    ap_did:String
+    ap_method:String
+}
+
+type UserCredentials{
+    total_count:Int!
+    data:[UserCredential!]!
+}
+
+type UserCredential{
+    score:String!
+    dp_name:String!
+    dp_method_name:String!
+    ap_name:String!
+    ap_method_name:String!
+    create_time:String!
+    valid_to:Int!
+}
+
+input AddUserBasicInfoReq {
+    did:String!
+#    profile_img:String!
+    nick_name:String!
+    email:String!
+    vcode:String!
+}
+
+input UpdateUserBasicInfoReq {
+    did:String!
+#    profile_img:String!
+    nick_name:String
+    email:String
+    vcode:String
+}
+
+type UserBasicInfo {
+    did:String!
+    nick_name:String!
+    avatar:String
+    email:String!
+}
+
+type ApplicationInfo {
+    did:String!
+    name:String!
+    website:String!
+}
+input ApplicationInfoReq {
+    did:String!
+    name:String!
+    website:String!
+}
+
+type StrategyResult {
+    address:String!
+    score:Int!
+}
+
+type ThirdPartyVcStatus {
+    mediaType:String!  #BrightID  Twitter ShuftiPro  Github  Linkedin
+    status:Boolean!
+}
+
+#DPInfo use getCompositeDpInfo and getAllAPInfo Unified interface
+type MethodInfo {
+    did:String!
+    title:String!
+    data:[MethodDetail!]!
+}
+type MethodDetail{
+    did:String!
+    method:String!
+    paramSchema:String!
+    resultSchema:String!
+    url:String!
+    compositeSetting:String!
+    param:String!
+    name:String!
+    description:String!
+    invoked:String!
+    latency:String!
+    createTime:String!
+    httpMethod:String
+    compositeData:[MethodDetail!]!
+    labels:LabelsInfos!
+    status:String!
+}
+
+input SnapShotOptions {
+    address:String!
+    symbol:String!
+    thirdMediaType:[String!]
+}
+
+type NFTParam {
+    hash:String!
+    sig:String!
+    nftType:Int!
+    score:Int!
+}
+
+type ClaimNFTResponse{
+    errorCode:Int!
+    address:String!
+    param:NFTParam
+}
+
+type SigResp{
+    hash:String!
+    sig:String!
+}
+
+input ClaimNFTWhere{
+    user_did:String
+    user_address:String
+    chain:String
+    nft_type:Int
+    result:String
+}
+type ClaimNFTRecord{
+    tx_hash:String!
+    chain:String!
+    contract_address:String!
+    nft_type:Int!
+    user_did:String!
+    user_address:String!
+    create_time:Int!
+    result:String!
+    score:String!
+}
+
+type ClaimNFTRecordsResp{
+    count:Int!
+    records:[ClaimNFTRecord!]!
+}
+
+input NFTSettingWhere{
+    id:Int
+}
+
+type NFTSettingResp{
+    count:Int!
+    records:[NFTSetting!]!
+}
+
+type NFTSetting{
+    id:Int!
+    name:String!
+    description:String!
+    image:String!
+    dp_did:String!
+    dp_method:String!
+    ap_did:String!
+    ap_name:String!
+    ap_method:String!
+    ap_method_name:String!
+    lowest_score:Int!
+    valid_days:Int!
+    restriction:String!
+    chain_addresses:[ChainAddress!]!
+    issue_by:String!
+}
+
+type ChainAddress{
+    chain:String!
+    contract_address:String!
+}
+
+input UserClaimedNFTWhere{
+    user_did:String
+    address:String
+    token_id:Int
+    chain:String
+    nft_type:Int
+}
+
+
+type UserClaimedNFTResp{
+    count:Int!
+    records:[UserClaimedNFT!]!
+}
+
+type UserClaimedNFT{
+    owner: String!
+    score: Int!
+    valid_to:Int!
+    dp_did         :String!
+    dp_title       :String!
+    dp_method      :String!
+    dp_method_title :String!
+    ap_did         :String!
+    ap_title       :String!
+    ap_method      :String!
+    ap_method_title :String!
+    valid_days     :Int!
+    image         :String!
+    tx_hash  :String!
+    token_id:Int!
+    name :String!
+    issue_by:String!
+    chain:String!
+    lowest_score:Int!
+    description:String!
+    claim_time:Int!
+    contract_address:String!
+    nft_type:Int!
+    nft_score:Int!
+    is_expired:Boolean!
+}
+
+type NFTClaimedCountResp{
+    total_count:Int!
+    user_count:Int!
+}
+
+input GetUserTasksWhere{
+    user_did:String!
+    dp_did:String
+    dp_method:String
+    ap_did:String
+    ap_method:String
+}
+
+type GetUserTasksResp {
+    total_count:Int!
+    tasks:[UserTasks!]!
+}
+
+
+input SubmitDpInfo {
+    dpInfoID:Int!
+    dpName:String!
+    dpDid:String!
+    dpDesc:String!
+    Avatar:String
+}
+
+input SubmitApInfo {
+    apInfoID:Int!
+    apName:String!
+    apDid:String!
+    apDesc:String!
+    Avatar:String
+}
+
+type DpInfoRes {
+    dpInfoID:Int!
+    dpDid:String
+    dpName:String
+    dpDesc:String!
+    Status:String!
+    ResDesc:String!
+    Avatar:String
+}
+
+type ApInfoRes {
+    apInfoID:Int!
+    apDid:String
+    apName:String
+    apDesc:String!
+    Status:String!
+    ResDesc:String!
+    Avatar:String
+}
+
+input DpDataSetInfo {
+    dataSetID:Int!
+    dataSetName:String!
+    dataSetMethodName:String!
+    dataSetDesc:String!
+    httpMethod:String!
+    httpURL:String!
+    Params:String!
+    Labels:LabelsInfo!
+}
+
+input ApDataSetInfo {
+    dataSetID:Int!
+    dataSetName:String!
+    dataSetMethodName:String!
+    dataSetDesc:String!
+    httpMethod:String!
+    httpURL:String!
+    Params:String!
+    Labels:LabelsInfo!
+}
+
+type DpDataSetRes {
+    dataSetID:Int!
+    dpDid:String!
+    dataSetName:String!
+    dataSetMethodName:String!
+    dataSetDesc:String!
+    httpMethod:String!
+    httpURL:String!
+    Params:String!
+    Status:String! #published，unsubmit,draft,failed,verifing
+    ResDesc:String
+    Labels:LabelsInfos!
+}
+
+type ApDataSetRes {
+    dataSetID:Int!
+    apDid:String!
+    dataSetName:String!
+    dataSetMethodName:String!
+    dataSetDesc:String!
+    httpMethod:String!
+    httpURL:String!
+    Params:String!
+    Status:String! #published，unsubmit,draft,failed,verifing
+    ResDesc:String
+    Labels:LabelsInfos!
+}
+
+
+type DPDataSetList {
+    dpDataSetData:[DpDataSetRes]
+    curPageNum:Int!
+    totalNum:Int!
+}
+
+type APDataSetList {
+    apDataSetData:[ApDataSetRes]
+    curPageNum:Int!
+    totalNum:Int!
+}
+
+type SNSBindingResp {
+    data:SNSBindingDataWithSig
+    encrypted:String
+}
+
+type SNSBindingDataWithSig{
+    data:SNSBindingData!
+    sig:String!
+}
+
+type SNSBindingData{
+    bright_id:Boolean!
+    shufti_pro:Boolean!
+    tweeter:Boolean!
+    github:Boolean!
+    linkedin:Boolean!
+    facebook:Boolean!
+}
+
+type UserBasicInfoResp{
+    walletAddress:Int!
+    verifications:Int!
+    credentials:Int!
+    nfts:Int!
+    modelPublished:Int!
+    datasetPublished:Int!
+}
+
+input NftLeadBoardWhere{
+    nftType:Int!
+}
+
+input LabelsInfo {
+    blockChain:[String!]
+    category:[String!]
+    scenario:[String!]
+}
+
+type LabelsInfos {
+    blockChain:[String!]
+    category:[String!]
+    scenario:[String!]
+}
+
+type Query {
+  getAllAlgorithmProviders(first:Int,skip:Int,where:AlgorithmProviderWhere,orderBy:String,orderDirection:String):GetAllAlgorithmProvidersResp!
+  getAllDataProviders(first:Int,skip:Int,where:DataProviderWhere,orderBy:String,orderDirection:String):GetAllDataProviders!
+  getDataProvidersByAP(did:String!,method:String!):[DPAndMethod!]
+  getUserAssetBalance(did:String!):[UserAsset!]!
+  getUserTotalValue(did:String!):String!
+  getTokenPrice(input:TokenPrice!):String!
+  getUserBindAddressInfo(input:String!):[UserAddressInfo!]!
+  getUserVisibleBindAddressInfo(input:String!):[UserAddressInfo!]!
+  getUserTasks(first:Int,skip:Int,where:GetUserTasksWhere,orderBy:String,orderDirection:String):GetUserTasksResp!
+  queryTaskExist(input:AddTask):Boolean!
+  getLatestOscore(did:String!):UserLatestOscore
+  getAlgorithmMethods(did:String!):[ProviderMethod!]!
+  getDataMethods(did:String!):[ProviderMethod!]!
+  getAlgorithmProvider(did:String!):AlgorithmProvider
+  getDataProvider(did:String!):DataProvider
+  getUserTask(key:String!,taskId:Int!):UserTasks
+  getAlgorithmProviderMethod(did:String!,name:String!):ProviderMethod
+  getDataProviderMethod(did:String!,name:String!):ProviderMethod
+  getUserGenNFTCount(did:String!):GenNFTCountResp!
+  getUserGenReputationCount(did:String!): GenReputationCountResp!
+
+  getUserCredentials(first:Int,skip:Int,where:UserCredntialWhere!,orderBy:String,orderDirection:String):UserCredentials!
+
+  getAllDataProviderMethod(first:Int,skip:Int,where:DataProviderMethodWhere,orderBy:String,orderDirection:String,labels:LabelsInfo!):GetAllDataProviderMethodsResp!
+  getAllAlgorithmProviderMethod(first:Int,skip:Int,where:AlgorithmProviderMethodWhere,orderBy:String,orderDirection:String,labels:LabelsInfo!):GetAllAlgorithmProviderMethodsResp!
+
+  getCompositeDpInfo(did:String!,method:String!):[MethodInfo!]!
+  getAllAPInfo:[MethodInfo!]!
+  getBasedVotingStrategy(addrs:[String!]!,space:String!,snapshot:String!, network:String!,options:SnapShotOptions):[StrategyResult!]!
+
+  getUserBasicInfo(did:String!):UserBasicInfo!
+  getApplicationInfo(did:String!):ApplicationInfo!
+  # ontlogin
+  queryOuterTask(input:OuterTaskReq):UserTasks
+    # ontlogin
+  requestChanllenge(input:ClientHello):ServerHello!
+
+    #third party credential
+  queryThirdPartyVc(did:String!,mediaType:String!) :String!
+  queryAllThirdPartyVcStatus(did:String!) :[ThirdPartyVcStatus!]!
+  queryUserKycInfo(did:String!):String!
+  queryUserPublishedDP(userDID:String!):DpInfoRes
+  queryUserLatestDPInfo(userDID:String!):DpInfoRes
+  queryDPDataSetInfo(userDID:String!,dataSetID:Int!) :DpDataSetRes!
+  queryUserDPDataSetList(userDID:String!,dataSetName:String!,status:String!,page:Int!,size:Int!,labels:LabelsInfo!) :DPDataSetList!
+  queryDPLabels :LabelsInfos
+    # only for test!!!!
+  querySig(addr:String!,nftType:Int!,score:Int!):SigResp!
+  getClaimNFTRecords(first:Int,skip:Int,where:ClaimNFTWhere,orderBy:String,orderDirection:String):ClaimNFTRecordsResp!
+  getNFTSettings(first:Int,skip:Int,where:NFTSettingWhere,orderBy:String,orderDirection:String):NFTSettingResp!
+  getUserClaimedNFT(first:Int,skip:Int,where:UserClaimedNFTWhere,orderBy:String,orderDirection:String):UserClaimedNFTResp!
+
+  getNFTClaimedCount(nftType:Int!,userDid:String!):NFTClaimedCountResp!
+  queryUserPublishedAP(userDID:String!):ApInfoRes
+  queryUserLatestAPInfo(userDID:String!):ApInfoRes
+  queryAPDataSetInfo(userDID:String!,dataSetID:Int!) :ApDataSetRes!
+  queryUserAPDataSetList(userDID:String!,dataSetName:String!,status:String!,page:Int!,size:Int!,labels:LabelsInfo!) :APDataSetList!
+  queryAPLabels :LabelsInfos
+
+  # as DP for 3rd party binding
+  queryUserSNSBinding(caller_did:String!,address:String!,encrypt:Boolean!):SNSBindingResp!
+
+  queryUserBasicInfo(user_did:String!):UserBasicInfoResp!
+
+}
+
+type Mutation {
+    # ontlogin
+  submitChanllenge(input:ClientResponse!):String!
+  login(input: Login!): String!
+  refreshToken(input: RefreshTokenInput!): String!
+  bindAddress(input:BindAddress!):String!
+  unbindAddress(input:UnBindAddress!):String!
+  addTask(input:AddTask!,overwrite:Boolean!): Int!
+  changeAddressVisible(userDID:String!,chain:String!,address:String!,visible:Boolean!):Boolean!
+
+  requestEmailVCode(did:String!,email:String!):Boolean!
+  addUserBasicInfo(input:AddUserBasicInfoReq!):Boolean!
+  updateUserBasicInfo(input:UpdateUserBasicInfoReq):Boolean!
+  updateApplicationInfo(input:ApplicationInfoReq):Boolean!
+  editNickNameBasicInfo(did:String!,nickName:String!):Boolean!
+  editEmailAddrBasicInfo(did:String!,email:String!,verifyCode:String!):Boolean!
+  editAppNameAppInfo(did:String!,appName:String!):Boolean!
+  editWebsiteAppInfo(did:String!,website:String!):Boolean!
+    #for sdk
+  requestOscore(input:RequestOscoreReq):Int!
+  addNewOuterTask(input:AddNewOuterTaskReq!):Int!
+
+  SaveThirdPartyVc(did:String!,mediaType:String!,credential:String!) :Boolean!
+  UnBindThirdParty(did:String!,mediaType:String!) :Boolean!
+  SaveUserKycInfo(did:String!,kyc:String!) :Boolean!
+
+  claimNFT(did:String!,chain:String!,nftType:Int!):ClaimNFTResponse!
+  submitClaimTxInfo(did:String!,chain:String!,addr:String!,nftType:Int!,txhash:String!):Boolean!
+
+
+  SaveDPInfo(userDID:String!,input:SubmitDpInfo) :Boolean!
+  SubmitDPInfo(userDID:String!,input:SubmitDpInfo) :Boolean!
+  RevokeDPInfo(userDID:String!,dpInfoID:Int!) :Boolean!
+  UploadAvatar(file: Upload!) :String!
+  SaveDPDataSet(userDID:String!,input:DpDataSetInfo) :Boolean!
+  PublishDPDataSet(userDID:String!,input:DpDataSetInfo) :Boolean!
+  RevokeDPDataSet(userDID:String!,dataSetID:Int!) :Boolean!
+  DeleteDPDataSet(userDID:String!,dataSetID:Int!) :Boolean!
+  RevokePublishedDPDataSet(userDID:String!,dataSetID:Int!) :Boolean!
+
+  SaveAPInfo(userDID:String!,input:SubmitApInfo) :Boolean!
+  SubmitAPInfo(userDID:String!,input:SubmitApInfo) :Boolean!
+  RevokeAPInfo(userDID:String!,apInfoID:Int!) :Boolean!
+  SaveAPDataSet(userDID:String!,input:ApDataSetInfo) :Boolean!
+  PublishAPDataSet(userDID:String!,input:ApDataSetInfo) :Boolean!
+  RevokeAPDataSet(userDID:String!,,dataSetID:Int!) :Boolean!
+  DeleteAPDataSet(userDID:String!,,dataSetID:Int!) :Boolean!
+  RevokePublishedAPDataSet(userDID:String!,dataSetID:Int!) :Boolean!
+}
+
